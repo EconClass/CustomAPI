@@ -15,7 +15,6 @@ const cookieParser = require('cookie-parser'),
     port = process.env.PORT || 3000,
     expressValidator = require('express-validator');
 
-
 //=================================MIDDLEWARE=================================\\
 
 // Cookie Parser
