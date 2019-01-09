@@ -1,7 +1,6 @@
 //=================================INITIAL=================================\\
 require('dotenv').config();
 const cookieParser = require('cookie-parser'),
-    jwt = require('jsonwebtoken'),
     express = require('express'),
     app = express(),
     path = require('path'),
@@ -35,6 +34,6 @@ app.use(expressValidator()); // Add after body parser initialization!
 app.use(methodOverride('_method'));
 
 // Set db
-require('./data/reddit-db.js');
+require('./data/api-db.js');
 
 app.listen(port);
