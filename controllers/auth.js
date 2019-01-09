@@ -1,4 +1,6 @@
-const User = require('../models/user.js');
+const User = require('../models/user.js'),
+    jwt = require('jsonwebtoken'),
+    secret = process.env.SECRET;
 
 module.exports = (app) => {
     //=============LOG-IN USER=============\\
