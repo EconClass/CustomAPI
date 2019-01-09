@@ -3,8 +3,12 @@ const User = require('../models/user.js'),
     secret = process.env.SECRET;
 
 module.exports = (app) => {
-    //=============LOG-IN USER=============\\
-    app.post('/login', (req, res) => {
+    //=============HOME=============\\
+    app.get('/', (req, res) => {
+        res.text('Welcome!');
+    });
+    //=============CREATE USER=============\\
+    app.post('/user', (req, res) => {
         const user = new User(req.body);
         user.save()
         .then( user => {
@@ -19,7 +23,7 @@ module.exports = (app) => {
     });
     //=============VIEW USER=============\\
     app.get()
-    //=============CREATE USER=============\\
+    //=============LOG-IN USER=============\\
     app.post()
     //=============UPDATE USER=============\\
     app.put()
