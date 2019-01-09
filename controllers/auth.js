@@ -22,11 +22,17 @@ module.exports = (app) => {
         });
     });
     //=============VIEW USER=============\\
-    app.get()
+    app.get('/user', (req, res) => {
+        let user = req.user;
+        User.findOne({username: user.username})
+            .then( (data) => {
+                res.send(user.username)
+            });
+    });
     //=============LOG-IN USER=============\\
-    app.post()
+    app.post();
     //=============UPDATE USER=============\\
-    app.put()
+    app.put();
     //=============DELETE USER=============\\
-    app.delete()
-}
+    app.delete();
+};
