@@ -28,7 +28,13 @@ module.exports = (app) => {
     });
     //=============VIEW DECK=============\\
     app.get('/user/deck/:id', (req, res) => {
-        //
+        Deck.findOne({_id: req.params.id})
+        .then((deck) => {
+            res.send(deck)
+        })
+        .catch((err) => {
+            console.log(err)
+        });
     });
     //=============DELETE DECK=============\\
     app.delete();
