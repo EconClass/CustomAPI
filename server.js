@@ -34,6 +34,9 @@ app.use(methodOverride('_method'));
 
 // Set db
 require('./data/api-db.js');
+
+// Controllers
 require('./controllers/auth.js')(app);
+require('./controllers/decks.js')(app);
 
 app.listen(port);
