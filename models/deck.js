@@ -5,7 +5,7 @@ const mongoose = require("mongoose"),
 const DeckSchema = new Schema({
     createdAt: { type: Date },
     updatedAt: { type: Date },
-    cards: [Card.schema],
+    cards: [{ type: Schema.Types.ObjectId, ref: "Card" }]
 });
 
 DeckSchema.pre("save", function(next) {
