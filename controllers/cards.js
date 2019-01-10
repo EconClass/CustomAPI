@@ -4,6 +4,7 @@ const unirest = require('unirest'),
     KEY = process.env.APIKEY;
 
 module.exports = (app) => {
+    
     //=============ADD CARD=============\\
     app.post('/user/decks/:id/card/:cardName', (req, res) => {
         let dId = req.params.id;
@@ -26,7 +27,7 @@ module.exports = (app) => {
                 deck.save();
                 return res.redirect(`/user/decks/${dId}`)
             });
-        })
+        });
     });
     //=============SEE CARD=============\\
     app.get();
