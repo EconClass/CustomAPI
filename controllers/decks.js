@@ -1,7 +1,6 @@
 const unirest = require('unirest'),
     Deck = require('../models/deck.js'),
-    User = require('../models/user.js'),
-    Card = require('../models/card.js');
+    User = require('../models/user.js');
 
 module.exports = (app) => {
 
@@ -26,6 +25,7 @@ module.exports = (app) => {
             return res.status(401);
         };
     });
+
     //=============VIEW DECK=============\\
     app.get('/user/deck/:id', (req, res) => {
         Deck.findOne({_id: req.params.id})
@@ -36,6 +36,15 @@ module.exports = (app) => {
             console.log(err)
         });
     });
+    
     //=============DELETE DECK=============\\
-    app.delete();
+    app.delete('/user/deck/:id', (req, res) => {
+        Deck.findOneAndDelete({_id: req.params.id})
+        .then((deck) => {
+            res.redirect('/user');
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+    });
 };
