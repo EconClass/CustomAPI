@@ -10,8 +10,8 @@ module.exports = (app) => {
 
     //=============CREATE USER=============\\
     app.post('/user/signup', (req, res) => {
-        let username = req.body.user.username;
-        let password = req.body.user.password;
+        let username = req.body.username;
+        let password = req.body.password;
         const user = new User({
             username: username,
             password: password
@@ -47,60 +47,47 @@ module.exports = (app) => {
         const username = req.body.username;
         const password = req.body.password;
         // Find this user name
-        User.findOne({ username }, "username password")
-            .then(user => {
-                if (!user) {
-                    // User not found
+        User.findOne({ username: username }, "username password")
+        .then(user => {
+            if (!user) {
+                // User not found
+                return res.status(401).send({ message: "Wrong Username or Password" });
+            };
+
+            // Check the password
+            user.comparePassword(password, (err, isMatch) => {
+                if (!isMatch) {
+                    // Password does not match
                     return res.status(401).send({ message: "Wrong Username or Password" });
                 };
+                // console.log(`user is ${user}`);
+                // Create a token
+                const token = jwt.sign({ _id: user._id, username: user.username }, secret, { expiresIn: "60 days" });
 
-                // Check the password
-                user.comparePassword(password, (err, isMatch) => {
-                    if (!isMatch) {
-                        // Password does not match
-                        return res.status(401).send({ message: "Wrong Username or Password" });
-                    };
-                    // console.log(`user is ${user}`);
-                    // Create a token
-                    const token = jwt.sign({ _id: user._id, username: user.username }, secret, { expiresIn: "60 days" });
-
-                    // Set a cookie and redirect to root
-                    res.cookie("nToken", token, { maxAge: 900000, httpOnly: true });
-                    res.redirect("/");
-                });
-            })
-            .catch(err => {
-                console.log(err);
+                // Set a cookie and redirect to root
+                res.cookie("nToken", token, { maxAge: 900000, httpOnly: true });
+                res.redirect("/");
             });
+        })
+        .catch(err => {
+            console.log(err);
+        });
     });
 
-    //=============UPDATE USER=============\\
-    // app.put('/user/:username/edit', (req, res) => {
-    //     const username = req.params.username;
-    //     const password = req.body.password;
-    //     const newPassword = req.body.newPassword;
-    //     // Find this user name
-    //     User.findOne({ username }, "username password")
-    //         .then(user => {
-    //             if (!user) {
-    //                 // User not found
-    //                 return res.status(401).send({ message: "Wrong Username or Password" });
-    //             };
-
-    //             // Check the password
-    //             user.save()
-    //                 .then( user => {
-    //                     let token = jwt.sign({ _id: user._id, username: user.username }, secret, { expiresIn: "60 days" });
-    //                     res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
-    //                     res.redirect("/");
-    //                 })
-    //                 .catch((err)=>{
-    //                     console.log(err.message);
-    //                     return res.status(400).send({ err: err });
-    //                 });
-    //         })
-            
-    // });
+    //=============UPDATE USER PASSWORD=============\\
+    app.put('/user/:username/edit', (req, res) => {
+        const username = req.params.username;
+        const newPassword = req.body.newPassword;
+        // Find this user name
+        User.findOneAndUpdate({ username: username }, {password: newPassword})
+        .then(user => {
+            if (!user) {
+                // User not found
+                return res.status(401).send({ message: "Wrong Username or Password" });
+            };
+            res.redirect('/');
+        });
+    });
     
     //=============DELETE USER=============\\
     app.delete('/user/:username', (req, res) => {
