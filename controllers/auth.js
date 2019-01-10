@@ -35,7 +35,7 @@ module.exports = (app) => {
         if (user != null) {
             User.findOne({username: user.username})
             .then( (data) => {
-                res.send(user.username)
+                res.send(user.decks);
             });
         } else {
             res.send('Please login!')
