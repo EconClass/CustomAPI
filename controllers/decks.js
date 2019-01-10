@@ -4,7 +4,7 @@ const unirest = require('unirest'),
     Card = require('../models/card.js');
 
 module.exports = (app) => {
-    
+
     //=============CREATE DECK=============\\
     app.post('/user/deck', (req, res) => {
         if (req.user) {
@@ -22,10 +22,14 @@ module.exports = (app) => {
             .catch((err) => {
                 console.log(err)
             });
+        } else {
+            return res.status(401);
         };
     });
     //=============VIEW DECK=============\\
-    app.get();
+    app.get('/user/deck/:id', (req, res) => {
+        //
+    });
     //=============DELETE DECK=============\\
     app.delete();
 };
