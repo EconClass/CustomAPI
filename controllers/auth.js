@@ -10,12 +10,16 @@ module.exports = (app) => {
 
     //=============CREATE USER=============\\
     app.post('/user/signup', (req, res) => {
-        const user = new User(req.body);
         let username = req.body.user.username;
         let password = req.body.user.password;
+        const user = new User({
+            username: username,
+            password: password
+        });
+        
         user.save()
         .then( user => {
-            let token = jwt.sign({ _id: user._id, username: user.username }, secret, { expiresIn: "60 days" });
+            let token = jwt.sign({ _id: user._id, username: username }, secret, { expiresIn: "60 days" });
             res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
             res.redirect("/");
         })
