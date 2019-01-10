@@ -5,7 +5,7 @@ const User = require('../models/user.js'),
 module.exports = (app) => {
     //=============HOME=============\\
     app.get('/', (req, res) => {
-        res.text('Welcome!');
+        res.send('Welcome!');
     });
 
     //=============CREATE USER=============\\

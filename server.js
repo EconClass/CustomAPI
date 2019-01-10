@@ -34,5 +34,6 @@ app.use(methodOverride('_method'));
 
 // Set db
 require('./data/api-db.js');
+require('./controllers/auth.js')(app);
 
 app.listen(port);
