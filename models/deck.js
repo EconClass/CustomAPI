@@ -5,6 +5,7 @@ const mongoose = require("mongoose"),
 const DeckSchema = new Schema({
     createdAt: { type: Date },
     updatedAt: { type: Date },
+    deckname: {type: String, required: true},
     cards: [{ type: Schema.Types.ObjectId, ref: "Card" }]
 });
 
