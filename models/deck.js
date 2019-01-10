@@ -1,6 +1,5 @@
 const mongoose = require("mongoose"),
-    Schema = mongoose.Schema,
-    Card = require('./models/card.js');
+    Schema = mongoose.Schema;
 
 const DeckSchema = new Schema({
     createdAt: { type: Date },
