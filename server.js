@@ -3,13 +3,6 @@ require('dotenv').config();
 const cookieParser = require('cookie-parser'),
     express = require('express'),
     app = express(),
-    path = require('path'),
-    exphbs = require('express-handlebars').create({
-    layoutsDir: path.join(__dirname, "views/layouts"),
-    partialsDir: path.join(__dirname, "views/partials"),
-    defaultLayout: 'main',
-    extname: 'hbs'
-    }),
     methodOverride = require('method-override'),
     bodyParser = require('body-parser'),
     port = process.env.PORT || 3000,
@@ -19,10 +12,6 @@ const cookieParser = require('cookie-parser'),
 
 // Cookie Parser
 app.use(cookieParser());
-
-// Handlebars
-app.engine('hbs', exphbs.engine)
-app.set('view engine', 'hbs');
 
 // Body Parser
 app.use(bodyParser.json());
@@ -38,5 +27,6 @@ require('./data/api-db.js');
 // Controllers
 require('./controllers/auth.js')(app);
 require('./controllers/decks.js')(app);
+require('./controllers/cards.js')(app);
 
 app.listen(port);

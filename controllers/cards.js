@@ -32,7 +32,7 @@ module.exports = (app) => {
         });
     });
     //=============SEE CARD=============\\
-    app.get();
+    // app.get();
     //=============REMOVE CARD=============\\
-    app.delete();
+    // app.delete();
 };
