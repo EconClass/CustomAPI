@@ -4,7 +4,7 @@ const unirest = require('unirest'),
     KEY = process.env.APIKEY;
 
 module.exports = (app) => {
-    
+
     //=============ADD CARD=============\\
     app.post('/user/decks/:id/card/:cardName', (req, res) => {
         let dId = req.params.id;
@@ -15,7 +15,7 @@ module.exports = (app) => {
             .header("Accept", "application/json")
             .end(function (result) {
                 let info = result.body
-                const card = new Card({
+                let card = new Card({
                     name: info.name,
                     attack: info.attack,
                     health: info.health,
@@ -27,6 +27,8 @@ module.exports = (app) => {
                 deck.save();
                 return res.redirect(`/user/decks/${dId}`)
             });
+        }).catch((err) => {
+            console.log(err);
         });
     });
     //=============SEE CARD=============\\
