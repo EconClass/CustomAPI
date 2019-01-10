@@ -1,5 +1,4 @@
-const unirest = require('unirest'),
-    Deck = require('../models/deck.js'),
+const Deck = require('../models/deck.js'),
     User = require('../models/user.js');
 
 module.exports = (app) => {
@@ -36,7 +35,7 @@ module.exports = (app) => {
             console.log(err)
         });
     });
-    
+
     //=============DELETE DECK=============\\
     app.delete('/user/deck/:id', (req, res) => {
         Deck.findOneAndDelete({_id: req.params.id})
