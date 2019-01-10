@@ -9,8 +9,10 @@ module.exports = (app) => {
     });
 
     //=============CREATE USER=============\\
-    app.post('/user', (req, res) => {
+    app.post('/user/signup', (req, res) => {
         const user = new User(req.body);
+        let username = req.body.user.username;
+        let password = req.body.user.password;
         user.save()
         .then( user => {
             let token = jwt.sign({ _id: user._id, username: user.username }, secret, { expiresIn: "60 days" });
@@ -26,10 +28,14 @@ module.exports = (app) => {
     //=============VIEW USER=============\\
     app.get('/user', (req, res) => {
         let user = req.user;
-        User.findOne({username: user.username})
+        if (user != null) {
+            User.findOne({username: user.username})
             .then( (data) => {
                 res.send(user.username)
             });
+        } else {
+            res.send('Please login!')
+        }
     });
 
     //=============LOG-IN USER=============\\
