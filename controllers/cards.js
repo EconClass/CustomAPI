@@ -4,6 +4,9 @@ const unirest = require('unirest'),
 
 module.exports = (app) => {
     //=============ADD CARD=============\\
+    app.post();
     //=============SEE CARD=============\\
+    app.get();
     //=============REMOVE CARD=============\\
+    app.delete();
 };
