@@ -8,6 +8,7 @@ const CardSchema = new Schema({
     cost: { type: Number, required: true },
     description: { type: String, required: true },
     imgurl: { type: String, required: true },
+    amount: { type: Number, required: true }
 });
 
 module.exports = mongoose.model("Card", CardSchema);

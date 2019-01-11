@@ -31,8 +31,28 @@ module.exports = (app) => {
             console.log(err);
         });
     });
-    //=============SEE CARD=============\\
-    // app.get();
+
+    //=============SEE A CARD=============\\
+    app.get('/user/cards/:cardName', (req, res) => {
+        unirest.get(`https://omgvamp-hearthstone-v1.p.mashape.com/cards/${req.params.cardName}`)
+        .header("X-Mashape-Key", KEY)
+        .header("Accept", "application/json")
+        .end(function (result) {
+            res.send(result.body);
+        });
+    });
+
     //=============REMOVE CARD=============\\
-    // app.delete();
+    app.delete('/user/decks/:id/card/:cardName', (req, res) => {
+        let dId = req.params.id;
+        Deck.findOne({_id: dId})
+        .then(deck => {
+            Card.findOneAndDelete({name: req.params.cardName})
+            .then(card => {
+                res.redirect(`/user/deck/${dId}`)
+            });
+        }).catch((err) => {
+            console.log(err);
+        });
+    });
 };
