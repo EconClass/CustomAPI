@@ -60,7 +60,7 @@ module.exports = (app) => {
                     // Password does not match
                     return res.status(401).send({ message: "Wrong Username or Password" });
                 };
-                // console.log(`user is ${user}`);
+
                 // Create a token
                 const token = jwt.sign({ _id: user._id, username: user.username }, secret, { expiresIn: "60 days" });
 
@@ -74,6 +74,12 @@ module.exports = (app) => {
         });
     });
 
+    //=============LOG-OUT USER=============\\
+    app.get('/logout', (req, res) => {
+        res.clearCookie('nToken');
+        res.redirect('/');
+    });
+    
     //=============UPDATE USER PASSWORD=============\\
     app.put('/user/:username/edit', (req, res) => {
         const username = req.params.username;

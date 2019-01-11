@@ -8,9 +8,10 @@ module.exports = (app) => {
     //=============ADD CARD=============\\
     app.post('/user/deck/:id/card/:cardName', (req, res) => {
         let dId = req.params.id;
+        let cardName = req.params.cardName;
         Deck.findOne({_id: dId})
         .exec(function (err, deck) {
-            unirest.get(`https://omgvamp-hearthstone-v1.p.mashape.com/cards/${req.params.cardName}`)
+            unirest.get(`https://omgvamp-hearthstone-v1.p.mashape.com/cards/${cardName}`)
             .header("X-Mashape-Key", KEY)
             .header("Accept", "application/json")
             .end(function (result) {
@@ -22,19 +23,17 @@ module.exports = (app) => {
                     cost: info.cost,
                     description: info.text,
                     imgurl: info.img,
-
+                    amount: 1
                 });
                 deck.cards.unshift(card);
                 deck.save();
-                return res.redirect(`/user/decks/${dId}`)
+                return res.redirect(`/user/deck/${dId}`)
             });
-        }).catch((err) => {
-            console.log(err);
         });
     });
 
     //=============SEE A CARD=============\\
-    app.get('/user/cards/:cardName', (req, res) => {
+    app.get('/user/card/:cardName', (req, res) => {
         unirest.get(`https://omgvamp-hearthstone-v1.p.mashape.com/cards/${req.params.cardName}`)
         .header("X-Mashape-Key", KEY)
         .header("Accept", "application/json")
