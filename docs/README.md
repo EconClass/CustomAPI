@@ -1,10 +1,9 @@
-# TourPal API
+# HS Deck Builder
 
 ## Overview
-This API is designed to enable users to store and access information about landmarks in a city.
-It allows users to be able to send json data to the server containing addresses, coordinates and photo urls.
-The server then stores the data in a Mongo DB which can then be accessed and manipulated.
-The CRUD routes follow RESTful conventions.
+This API is designed to enable users to store and access information about Hearthstone cards into decks.
+It allows users to create accounts to login and logout of which are provisioned using jwt tokens.
+HS Deck Builder follows RESTful architecture and allows decks to be CRUDed using info from omgvamp's Hearthstone API.
 
 ## Examples
 
@@ -22,9 +21,8 @@ Application:
 - Mongo DB
 - Heroku
 
-Testing:
-- Mocha
-- Chai
+External API:
+- http://hearthstoneapi.com/
 
 Authentication and Authorization:
 - JSON Webtokens
