@@ -6,7 +6,7 @@ const unirest = require('unirest'),
 module.exports = (app) => {
 
     //=============ADD CARD=============\\
-    app.post('/user/decks/:id/card/:cardName', (req, res) => {
+    app.post('/user/deck/:id/card/:cardName', (req, res) => {
         let dId = req.params.id;
         Deck.findOne({_id: dId})
         .exec(function (err, deck) {
@@ -22,6 +22,7 @@ module.exports = (app) => {
                     cost: info.cost,
                     description: info.text,
                     imgurl: info.img,
+
                 });
                 deck.cards.unshift(card);
                 deck.save();
@@ -43,7 +44,7 @@ module.exports = (app) => {
     });
 
     //=============REMOVE CARD=============\\
-    app.delete('/user/decks/:id/card/:cardName', (req, res) => {
+    app.delete('/user/deck/:id/card/:cardName', (req, res) => {
         let dId = req.params.id;
         Deck.findOne({_id: dId})
         .then(deck => {
