@@ -7,13 +7,17 @@ HS Deck Builder follows RESTful architecture and allows decks to be CRUDed using
 
 ## Examples
 
-Create
+Create a deck:
+https://sleepy-beyond-72468.herokuapp.com/user/deck
 
-Read
+View a deck:
+https://sleepy-beyond-72468.herokuapp.com/user/deck/:id
 
-Update
+Add and Remove Card from deck:
+https://sleepy-beyond-72468.herokuapp.com/user/deck/:id/card/:cardName
 
-Delete
+Delete a deck:
+https://sleepy-beyond-72468.herokuapp.com/user/deck/:id
 
 ## Powered By
 Application:
