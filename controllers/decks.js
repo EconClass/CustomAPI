@@ -36,6 +36,17 @@ module.exports = (app) => {
         });
     });
 
+    //=============VIEW SEARCH DECKS=============\\
+    app.get('/user/deck/:id', (req, res) => {
+        Deck.find({_id: req.params.id})
+        .then((deck) => {
+            res.send(deck)
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+    });
+
     //=============DELETE DECK=============\\
     app.delete('/user/deck/:id', (req, res) => {
         Deck.findOneAndDelete({_id: req.params.id})
