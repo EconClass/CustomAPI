@@ -1,5 +1,5 @@
 const Deck = require('../models/deck.js'),
-    User = require('../models/user.js');
+      User = require('../models/user.js');
 
 module.exports = (app) => {
 
@@ -21,7 +21,7 @@ module.exports = (app) => {
                 console.log(err)
             });
         } else {
-            return res.status(401);
+          return res.status(401);
         };
     });
 

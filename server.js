@@ -1,17 +1,17 @@
 //=================================INITIAL=================================\\
 if (!process.env.PORT) {
-    require('dotenv').config()
-    process.env.NODE_ENV = "dev"
+  require('dotenv').config()
+  process.env.NODE_ENV = "dev"
 }
 
 const cookieParser = require('cookie-parser'),
-    express = require('express'),
-    app = express(),
-    path = require('path'),
-    methodOverride = require('method-override'),
-    bodyParser = require('body-parser'),
-    port = process.env.PORT || 3000,
-    expressValidator = require('express-validator');
+      express = require('express'),
+      app = express(),
+      path = require('path'),
+      methodOverride = require('method-override'),
+      bodyParser = require('body-parser'),
+      port = process.env.PORT || 3000,
+      expressValidator = require('express-validator');
 
 //=================================MIDDLEWARE=================================\\
 

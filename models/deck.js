@@ -9,14 +9,12 @@ mongoosePaginate.paginate.options = {
 };
 
 const DeckSchema = new Schema({
-      createdAt: { type: Date },
-      updatedAt: { type: Date },
-      deckname: {type: String, required: true},
-      cards: [{ type: Schema.Types.ObjectId, ref: "Card" }]
+  createdAt: { type: Date },
+  updatedAt: { type: Date },
+  deckname: {type: String, required: true},
+  cards: [{ type: Schema.Types.ObjectId, ref: "Card" }]
 },
-{
-    timestamps: true
-});
+{ timestamps: true });
 
 DeckSchema.plugin(mongoosePaginate);
 
