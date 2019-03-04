@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  .row
+    .col-sm-4
+      if deck.avatarUrl
+        img.card-img-top(src=deck.avatarUrl + '-square.', alt='Card image cap')
+      else
+        img.card-img-top(src=deck.picUrlSq, alt='Card image cap')
+      h1=deck.name
+      .text-right
+        a(href="/decks/" + deck.id + "/edit").btn-link Edit
+      

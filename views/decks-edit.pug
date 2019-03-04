@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    
+    .row.justify-content-center
+        .col-sm-6
+            legend New Deck
+            form(action="/decks/0?_method=PUT", method="POST")
+                .form-group
+                    label Name*
+                    input.form-control(name="name" required value=deck.name)
+                .form-group
+                    label Description
+                    textarea.form-control(name="description")= deck.description
+                button(type="submit").btn.btn-primary Save
+            .text-right
+                form(action="/decks/0?_method=DELETE", method="POST")
+                    button(type="submit").btn.btn-danger Remove
