@@ -1,105 +1,105 @@
 const User = require('../models/user.js'),
-    jwt = require('jsonwebtoken'),
-    secret = process.env.SECRET;
+      jwt = require('jsonwebtoken'),
+      secret = process.env.SECRET;
 
 module.exports = (app) => {
-    //=============HOME=============\\
-    app.get('/', (req, res) => {
-        res.send('Welcome!');
+  // //=============HOME=============\\
+  // app.get('/user', (req, res) => {
+  //   res.render('decks-index', { decks: decks });
+  // });
+    
+  //=============CREATE USER=============\\
+  app.post('/user/signup', (req, res) => {
+    let username = req.body.username;
+    let password = req.body.password;
+    const user = new User({
+      username: username,
+      password: password
     });
+    
+    user.save()
+      .then( user => {
+        let token = jwt.sign({ _id: user._id, username: username }, secret, { expiresIn: "60 days" });
+        res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
+        res.redirect("/");
+      })
+      .catch((err)=>{
+        console.log(err.message);
+        return res.status(400).send({ err: err });
+      });
+  });
 
-    //=============CREATE USER=============\\
-    app.post('/user/signup', (req, res) => {
-        let username = req.body.username;
-        let password = req.body.password;
-        const user = new User({
-            username: username,
-            password: password
+  //=============VIEW USER=============\\
+  app.get('/user', (req, res) => {
+    let user = req.user;
+    if (user != null) {
+      User.findOne({username: user.username})
+        .then( (data) => {
+          res.send(user.decks);
         });
-        
-        user.save()
-        .then( user => {
-            let token = jwt.sign({ _id: user._id, username: username }, secret, { expiresIn: "60 days" });
-            res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
-            res.redirect("/");
-        })
-        .catch((err)=>{
-            console.log(err.message);
-            return res.status(400).send({ err: err });
+    } else {
+      res.send('Please login!')
+    }
+  });
+
+  //=============LOG-IN USER=============\\
+  app.post('/login', (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    // Find this user name
+    User.findOne({ username: username }, "username password")
+      .then(user => {
+        if (!user) {
+          // User not found
+          return res.status(401).send({ message: "Wrong Username or Password" });
+        };
+
+        // Check the password
+        user.comparePassword(password, (err, isMatch) => {
+          if (!isMatch) {
+            // Password does not match
+            return res.status(401).send({ message: "Wrong Username or Password" });
+          };
+
+          // Create a token
+          const token = jwt.sign({ _id: user._id, username: user.username }, secret, { expiresIn: "60 days" });
+
+          // Set a cookie and redirect to root
+          res.cookie("nToken", token, { maxAge: 900000, httpOnly: true });
+          res.redirect("/");
         });
-    });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
 
-    //=============VIEW USER=============\\
-    app.get('/user', (req, res) => {
-        let user = req.user;
-        if (user != null) {
-            User.findOne({username: user.username})
-            .then( (data) => {
-                res.send(user.decks);
-            });
-        } else {
-            res.send('Please login!')
-        }
-    });
-
-    //=============LOG-IN USER=============\\
-    app.post('/login', (req, res) => {
-        const username = req.body.username;
-        const password = req.body.password;
-        // Find this user name
-        User.findOne({ username: username }, "username password")
-        .then(user => {
-            if (!user) {
-                // User not found
-                return res.status(401).send({ message: "Wrong Username or Password" });
-            };
-
-            // Check the password
-            user.comparePassword(password, (err, isMatch) => {
-                if (!isMatch) {
-                    // Password does not match
-                    return res.status(401).send({ message: "Wrong Username or Password" });
-                };
-
-                // Create a token
-                const token = jwt.sign({ _id: user._id, username: user.username }, secret, { expiresIn: "60 days" });
-
-                // Set a cookie and redirect to root
-                res.cookie("nToken", token, { maxAge: 900000, httpOnly: true });
-                res.redirect("/");
-            });
-        })
-        .catch(err => {
-            console.log(err);
-        });
-    });
-
-    //=============LOG-OUT USER=============\\
-    app.get('/logout', (req, res) => {
-        res.clearCookie('nToken');
+  //=============LOG-OUT USER=============\\
+  app.get('/logout', (req, res) => {
+    res.clearCookie('nToken');
+    res.redirect('/');
+  });
+  
+  //=============UPDATE USER PASSWORD=============\\
+  app.put('/user/:username/edit', (req, res) => {
+    const username = req.params.username;
+    const newPassword = req.body.newPassword;
+    // Find this user name
+    User.findOneAndUpdate({ username: username }, {password: newPassword})
+      .then(user => {
+        if (!user) {
+          // User not found
+          return res.status(401).send({ message: "Wrong Username or Password" });
+        };
         res.redirect('/');
-    });
-    
-    //=============UPDATE USER PASSWORD=============\\
-    app.put('/user/:username/edit', (req, res) => {
-        const username = req.params.username;
-        const newPassword = req.body.newPassword;
-        // Find this user name
-        User.findOneAndUpdate({ username: username }, {password: newPassword})
-        .then(user => {
-            if (!user) {
-                // User not found
-                return res.status(401).send({ message: "Wrong Username or Password" });
-            };
-            res.redirect('/');
-        });
-    });
-    
-    //=============DELETE USER=============\\
-    app.delete('/user/:username', (req, res) => {
-        User.findOneAndDelete({username: req.params.username})
-            .then((response) => {
-                res.redirect('/');
-            });
-    });
+      });
+  });
+  
+  //=============DELETE USER=============\\
+  app.delete('/user/:username', (req, res) => {
+    User.findOneAndDelete({username: req.params.username})
+      .then((response) => {
+        res.redirect('/');
+      });
+  });
 };

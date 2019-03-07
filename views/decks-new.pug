@@ -1,12 +1,12 @@
 extends layout
 
 block content
-    
   .row.justify-content-center
     .col-sm-6
-      legend Add Card
-      form(action="/pets", method="post", id="new-pet")
+      legend Add Deck
+      form(action="/decks", method="post", id="new-deck")
         .form-group
-          label Name*
-          input.form-control(name="name" required)
-        button(type="submit").btn.btn-primary Save
+          label Deck Name*
+          input.form-control(type="text" name="deckname" required)
+        .form-group
+          button(type="submit").btn.btn-primary Save

@@ -3,11 +3,11 @@ extends layout
 block content
   .row
     .col-sm-4
-      if deck.avatarUrl
-        img.card-img-top(src=deck.avatarUrl + '-square.', alt='Card image cap')
-      else
-        img.card-img-top(src=deck.picUrlSq, alt='Card image cap')
-      h1=deck.name
+      h1=deck.deckname
+      each card, index in deck.cards
+        .col-sm-4.justify-content-center
+        .card
+          .card-body
+            h4.card-title= card.name
       .text-right
         a(href="/decks/" + deck.id + "/edit").btn-link Edit
-      

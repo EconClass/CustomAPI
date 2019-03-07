@@ -13,7 +13,7 @@ html
       #navbarSupportedContent.collapse.navbar-collapse
         ul.navbar-nav
           li.nav-item
-            a.nav-link(href='/deck/new') New Pet
+            a.nav-link(href='/decks/new') New Deck
       form.form-inline(action='/search')
         input.form-control.mr-sm-2(type='search', placeholder='Search', aria-label='Search' name='term')
         button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Search
@@ -21,13 +21,6 @@ html
     .container
       .alert#alert(style="display:none;")
       block content
-
-    footer.mt-5
-      .container-fluid.bg-primary.py-3
-        .container
-          .row.py-3
-            .col-md-9
-              p.text-white HS Custom Deck Builder &#xA9; 2019
 
     script(src="https://unpkg.com/axios/dist/axios.min.js")
     script(src="/javascripts/scripts.js")

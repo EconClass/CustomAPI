@@ -1,17 +1,11 @@
-"use strict";
-
 const mongoose = require('mongoose'),
       Schema = mongoose.Schema,
       mongoosePaginate = require('mongoose-paginate');
 
-mongoosePaginate.paginate.options = {
-  limit: 3 // how many records on each page
-};
+mongoosePaginate.paginate.options = { limit: 5 };
 
 const DeckSchema = new Schema({
-  createdAt: { type: Date },
-  updatedAt: { type: Date },
-  deckname: {type: String, required: true},
+  deckname: String,
   cards: [{ type: Schema.Types.ObjectId, ref: "Card" }]
 },
 { timestamps: true });
