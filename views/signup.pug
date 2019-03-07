@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .row.justify-content-center
+    .col-sm-6
+      legend Welcome!
+      form(action="/user/signup", method="post", id="signup")
+        .form-group
+          label Userame*
+          input.form-control(type="text" name="username" required)
+        .form-group
+          label Email*
+          input.form-control(type="text" name="email" required)
+        .form-group
+          label Password*
+          input.form-control(type="password" name="password" required)
+        .form-group
+          button(type="submit").btn.btn-primary Save

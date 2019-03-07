@@ -1,32 +1,56 @@
 const User = require('../models/user.js'),
       jwt = require('jsonwebtoken'),
-      secret = process.env.SECRET;
+      secret = process.env.SECRET,
+      nodemailer = require('nodemailer'),
+      mg = require('nodemailer-mailgun-transport');
+
+// Mailgun
+const auth = {
+  auth: {
+    api_key: process.env.MAILGUN_API_KEY,
+    domain: process.env.EMAIL_DOMAIN
+  }
+}
+
+const nodemailerMailgun = nodemailer.createTransport(mg(auth));
 
 module.exports = (app) => {
-  // //=============HOME=============\\
-  // app.get('/user', (req, res) => {
-  //   res.render('decks-index', { decks: decks });
-  // });
-    
+  //=============USER SIGNUP FORM=============\\
+  app.get('/form/signup', (req, res) => {
+    res.render('signup')
+  });
+  
   //=============CREATE USER=============\\
   app.post('/user/signup', (req, res) => {
-    let username = req.body.username;
-    let password = req.body.password;
-    const user = new User({
-      username: username,
-      password: password
-    });
+    console.log(req.body)
+    const user = new User(req.body);
     
     user.save()
       .then( user => {
-        let token = jwt.sign({ _id: user._id, username: username }, secret, { expiresIn: "60 days" });
+        let token = jwt.sign({ _id: user._id, username: user.username }, secret, { expiresIn: "60 days" });
         res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
-        res.redirect("/");
-      })
-      .catch((err)=>{
-        console.log(err.message);
-        return res.status(400).send({ err: err });
-      });
+      }).then( mail => {
+          console.log(mail)
+          const recipient = {
+            email: req.body.email,
+            name: req.body.username
+          }
+          nodemailerMailgun.sendMail({
+            from: 'no-reply@example.com',
+            to: recipient.email, // An array if you have multiple recipients.
+            subject: 'Hey you, awesome!',
+            template: {
+              name: 'email.handlebars',
+              engine: 'handlebars',
+              context: recipient
+            }
+          })
+        }).then(() => {
+          res.redirect("/");
+        }).catch((err)=>{
+          console.log(err.message);
+          return res.status(400).send({ err: err });
+        });
   });
 
   //=============VIEW USER=============\\

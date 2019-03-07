@@ -2,7 +2,7 @@ const mongoose = require('mongoose'),
       Schema = mongoose.Schema,
       mongoosePaginate = require('mongoose-paginate');
 
-mongoosePaginate.paginate.options = { limit: 5 };
+mongoosePaginate.paginate.options = { limit: 3 };
 
 const DeckSchema = new Schema({
   deckname: String,

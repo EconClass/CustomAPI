@@ -12,7 +12,7 @@ const cookieParser = require('cookie-parser'),
       bodyParser = require('body-parser'),
       port = process.env.PORT || 3000,
       expressValidator = require('express-validator');
-
+      
 //=================================MIDDLEWARE=================================\\
 
 // view engine setup
