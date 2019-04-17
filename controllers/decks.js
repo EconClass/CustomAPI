@@ -35,13 +35,13 @@ module.exports = (app) => {
       });
   });
 
-//=============SEE DECK=============\\
-app.get('/deck/:id', (req, res) => {
-  Deck.findOne({ _id :req.params.id })
-    .then((deck) => {
-      res.render('decks-show', { deck: deck} );
-    });
-});
+  //=============SEE DECK=============\\
+  app.get('/deck/:id', (req, res) => {
+    Deck.findOne({ _id :req.params.id })
+      .then((deck) => {
+        res.render('decks-show', { deck: deck} );
+      });
+  });
 
   //=============CREATE DECK=============\\
   app.post('/decks', (req, res) => {

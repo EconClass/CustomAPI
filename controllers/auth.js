@@ -21,38 +21,41 @@ module.exports = (app) => {
   });
   
   //=============CREATE USER=============\\
-  app.post('/user/signup', (req, res) => {
-    console.log(req.body)
-    const user = new User(req.body);
-    
-    user.save()
-      .then( user => {
-        let token = jwt.sign({ _id: user._id, username: user.username }, secret, { expiresIn: "60 days" });
-        res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
-      }).then( mail => {
-          console.log(mail)
-          const recipient = {
-            email: req.body.email,
-            name: req.body.username
-          }
-          nodemailerMailgun.sendMail({
-            from: 'no-reply@example.com',
-            to: recipient.email, // An array if you have multiple recipients.
-            subject: 'Hey you, awesome!',
-            template: {
-              name: 'email.handlebars',
-              engine: 'handlebars',
-              context: recipient
-            }
-          })
-        }).then(() => {
-          res.redirect("/");
-        }).catch((err)=>{
-          console.log(err.message);
-          return res.status(400).send({ err: err });
-        });
-  });
 
+  async function createUser(req, res) {
+
+    let user = new User(req.body);
+    
+    await user.save() // save to db
+
+    // Who are we sending email to?
+    let recipient = {
+      email: req.body.email,
+      name: req.body.username
+    }; 
+    
+    // Create jwt token
+    let token = await jwt.sign({ _id: user._id, username: user.username }, secret, { expiresIn: "60 days" });
+    res.cookie('nToken', token, { maxAge: 900000, httpOnly: true }); // set token to cookie
+
+    // Mail recipient
+    await nodemailerMailgun.sendMail({
+      from: 'no-reply@example.com',
+      to: recipient.email, // An array if you have multiple recipients.
+      subject: 'Hey you, awesome!',
+      template: {
+        name: 'email.handlebars',
+        engine: 'handlebars',
+        context: recipient
+      }
+    });
+
+    res.redirect("/");
+  };
+
+  app.post('/user/signup', createUser());
+
+  
   //=============VIEW USER=============\\
   app.get('/user', (req, res) => {
     let user = req.user;
